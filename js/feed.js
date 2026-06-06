@@ -197,16 +197,20 @@ reel.innerHTML = `
 
 <iframe
 
-src="
-https://www.youtube.com/embed/${videoId}
-?autoplay=1
-&mute=1
-&controls=0
-&loop=1
-&playlist=${videoId}
-&modestbranding=1
-&playsinline=1
-"
+reel.innerHTML = `
+<iframe
+src="https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&playsinline=1&controls=0&rel=0&modestbranding=1&playlist=${videoId}&loop=1"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+allowfullscreen
+referrerpolicy="strict-origin-when-cross-origin">
+</iframe>
+
+<div class="reel-overlay">
+  <div class="username">
+    @${username}
+  </div>
+</div>
+`;
 
 allow="
 autoplay;
