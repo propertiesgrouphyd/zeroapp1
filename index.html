@@ -3,10 +3,6 @@
 
 <head>
 
-<!-- ==================================================
-BASIC SEO
-================================================== -->
-
 <meta charset="UTF-8">
 
 <meta
@@ -14,16 +10,16 @@ name="viewport"
 content="width=device-width,initial-scale=1,viewport-fit=cover">
 
 <title>
-QuantumFeed - Vertical Shorts Community
+Zero App - Discover Apps, Services & Digital Tools
 </title>
 
 <meta
 name="description"
-content="Discover and share YouTube Shorts in a beautiful vertical feed experience. QuantumFeed delivers an immersive reels-style community powered by YouTube Shorts.">
+content="Zero App is a modern platform to discover apps, digital services, useful tools and innovative experiences in one place.">
 
 <meta
 name="keywords"
-content="QuantumFeed, YouTube Shorts, Reels, Vertical Videos, Video Feed, Shorts Community, Viral Videos, PWA">
+content="Zero App, Apps, Digital Services, Tools, Technology, Mobile Apps, Productivity Apps, Utility Apps">
 
 <meta
 name="robots"
@@ -31,7 +27,7 @@ content="index,follow,max-image-preview:large">
 
 <meta
 name="author"
-content="QuantumFeed">
+content="Zero App">
 
 <meta
 name="theme-color"
@@ -43,32 +39,28 @@ content="dark">
 
 <link
 rel="canonical"
-href="https://quantumfeed.app/">
+href="https://zeroapp.vidhwaan.com/">
 
-<!-- ==================================================
-OPEN GRAPH
-================================================== -->
+<!-- Open Graph -->
 
 <meta property="og:type" content="website">
 
 <meta property="og:title"
-content="QuantumFeed - Vertical Shorts Community">
+content="Zero App">
 
 <meta property="og:description"
-content="A premium reels-style community powered by YouTube Shorts.">
+content="Discover apps, digital services, useful tools and innovative experiences.">
 
 <meta property="og:url"
-content="https://quantumfeed.app/">
+content="https://zeroapp.vidhwaan.com/">
 
 <meta property="og:image"
 content="/icons/icon-512.png">
 
 <meta property="og:site_name"
-content="QuantumFeed">
+content="Zero App">
 
-<!-- ==================================================
-TWITTER
-================================================== -->
+<!-- Twitter -->
 
 <meta
 name="twitter:card"
@@ -76,19 +68,17 @@ content="summary_large_image">
 
 <meta
 name="twitter:title"
-content="QuantumFeed">
+content="Zero App">
 
 <meta
 name="twitter:description"
-content="Discover and share vertical YouTube Shorts.">
+content="Discover apps, services and digital tools.">
 
 <meta
 name="twitter:image"
 content="/icons/icon-512.png">
 
-<!-- ==================================================
-PWA
-================================================== -->
+<!-- PWA -->
 
 <meta
 name="mobile-web-app-capable"
@@ -104,28 +94,30 @@ content="black-translucent">
 
 <meta
 name="apple-mobile-web-app-title"
-content="QuantumFeed">
+content="Zero App">
 
-<link rel="manifest" href="./manifest.json">
+<link
+rel="manifest"
+href="./manifest.json">
 
-<!-- ==================================================
-ICONS
-================================================== -->
+<!-- Icons -->
 
-<link rel="icon" href="./favicon.ico">
+<link
+rel="icon"
+href="./favicon.ico">
 
 <link
 rel="apple-touch-icon"
 href="./icons/icon-192.png">
 
-<!-- ==================================================
-FONTS
-================================================== -->
+<!-- Fonts -->
 
-<link rel="preconnect"
+<link
+rel="preconnect"
 href="https://fonts.googleapis.com">
 
-<link rel="preconnect"
+<link
+rel="preconnect"
 href="https://fonts.gstatic.com"
 crossorigin>
 
@@ -133,23 +125,19 @@ crossorigin>
 href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
 rel="stylesheet">
 
-<!-- ==================================================
-JSON-LD
-================================================== -->
+<!-- Structured Data -->
 
 <script type="application/ld+json">
 {
- "@context":"https://schema.org",
- "@type":"WebSite",
- "name":"QuantumFeed",
- "url":"https://quantumfeed.app",
- "description":"Vertical video community powered by YouTube Shorts."
+  "@context":"https://schema.org",
+  "@type":"WebSite",
+  "name":"Zero App",
+  "url":"https://zeroapp.pages.dev",
+  "description":"Discover apps, digital services, useful tools and innovative experiences."
 }
 </script>
 
-<!-- ==================================================
-CSS
-================================================== -->
+<!-- CSS -->
 
 <link
 rel="stylesheet"
@@ -159,29 +147,21 @@ href="./css/style.css">
 
 <body>
 
-<!-- ==================================================
-APP
-================================================== -->
+<!-- APP -->
 
 <div id="app">
 
-  <!-- ==========================================
-  FEED CONTAINER
-  ========================================== -->
+<main
+id="feed"
+class="feed">
 
-  <main
-  id="feed"
-  class="feed">
+<!-- Content injected by JS -->
 
-    <!-- videos injected by JS -->
-
-  </main>
+</main>
 
 </div>
 
-<!-- ==================================================
-LOADER
-================================================== -->
+<!-- Loader -->
 
 <div
 id="loader"
@@ -191,47 +171,41 @@ class="loader">
 
 <img
 src="./icons/logo.png"
-alt="QuantumFeed">
+alt="Zero App">
 
 </div>
 
 <div class="loader-text">
 
-Loading Feed...
+Loading...
 
 </div>
 
 </div>
 
-<!-- ==================================================
-ADD VIDEO BUTTON
-================================================== -->
+<!-- Add Button -->
 
 <button
 id="addBtn"
 class="fab"
-aria-label="Add Video">
+aria-label="Add App">
 
 +
 
 </button>
 
-<!-- ==================================================
-INSTALL APP BUTTON
-================================================== -->
+<!-- Install Button -->
 
 <button
 id="installBtn"
 class="install-btn"
-aria-label="Install App">
+aria-label="Install Zero App">
 
 📲
 
 </button>
 
-<!-- ==================================================
-UPLOAD MODAL
-================================================== -->
+<!-- Upload Modal -->
 
 <div
 id="uploadModal"
@@ -244,7 +218,7 @@ class="modal hidden">
 <div class="modal-header">
 
 <h2>
-Submit Short
+Add App
 </h2>
 
 <button
@@ -262,19 +236,19 @@ class="close-btn">
 <input
 id="username"
 type="text"
-maxlength="30"
-placeholder="Your Name">
+maxlength="50"
+placeholder="App Name">
 
 <input
 id="shortUrl"
 type="url"
-placeholder="Paste YouTube Shorts URL">
+placeholder="App Link">
 
 <button
 id="submitVideo"
 class="submit-btn">
 
-Submit Short
+Add App
 
 </button>
 
@@ -289,9 +263,7 @@ class="upload-status">
 
 </div>
 
-<!-- ==================================================
-EMPTY STATE
-================================================== -->
+<!-- Empty State -->
 
 <div
 id="emptyState"
@@ -299,30 +271,26 @@ class="empty-state hidden">
 
 <img
 src="./icons/logo.png"
-alt="QuantumFeed">
+alt="Zero App">
 
 <h2>
-No Videos Yet
+No Apps Yet
 </h2>
 
 <p>
-Be the first to share a YouTube Short.
+Discover and explore amazing apps.
 </p>
 
 </div>
 
-<!-- ==================================================
-TOAST
-================================================== -->
+<!-- Toast -->
 
 <div
 id="toast"
 class="toast hidden">
 </div>
 
-<!-- ==================================================
-SCRIPTS
-================================================== -->
+<!-- Scripts -->
 
 <script
 type="module"
