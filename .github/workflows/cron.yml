@@ -1,0 +1,38 @@
+name: QuantumFeed Cleanup
+
+on:
+
+  schedule:
+    - cron: "0 0 * * *"
+
+  workflow_dispatch:
+
+jobs:
+
+  cleanup:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Create Package
+        run: |
+          echo '{}' > package.json
+
+      - name: Install Firebase Admin
+        run: |
+          npm install firebase-admin
+
+      - name: Run Cleanup
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: |
+          node delete-old.js
