@@ -1,6 +1,6 @@
 // ======================================================
 // QUANTUMFEED
-// FIREBASE V10 CONFIG
+// FIREBASE V10
 // ======================================================
 
 import { initializeApp }
@@ -16,37 +16,28 @@ getFirestore
 from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
 // ======================================================
-// FIREBASE CONFIG
-// ======================================================
-//
-// REPLACE WITH YOUR REAL VALUES
-//
-// Firebase Console
-// Project Settings
-// General
-// Web App
-//
+// CONFIG
 // ======================================================
 
 const firebaseConfig = {
 
 apiKey:
-"REPLACE_API_KEY",
+"AIzaSyAt4d11ASECig6a2ByaLg_716AuLh6HPdc",
 
 authDomain:
-"REPLACE_PROJECT.firebaseapp.com",
+"quantumfeed-e9b1d.firebaseapp.com",
 
 projectId:
-"REPLACE_PROJECT",
+"quantumfeed-e9b1d",
 
 storageBucket:
-"REPLACE_PROJECT.appspot.com",
+"quantumfeed-e9b1d.firebasestorage.app",
 
 messagingSenderId:
-"REPLACE_SENDER_ID",
+"304072670051",
 
 appId:
-"REPLACE_APP_ID"
+"1:304072670051:web:f233d7622165781f54b156"
 
 };
 
@@ -69,7 +60,5 @@ app
 // ======================================================
 
 export {
-
 db
-
 };
