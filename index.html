@@ -10,16 +10,16 @@ name="viewport"
 content="width=device-width,initial-scale=1,viewport-fit=cover">
 
 <title>
-Zero App - Discover Apps, Services & Digital Tools
+Zero App - Watch & Share Short Videos
 </title>
 
 <meta
 name="description"
-content="Zero App is a modern platform to discover apps, digital services, useful tools and innovative experiences in one place.">
+content="Zero App is a modern short video community where people watch, discover and share reels, shorts and trending videos in a beautiful full-screen experience.">
 
 <meta
 name="keywords"
-content="Zero App, Apps, Digital Services, Tools, Technology, Mobile Apps, Productivity Apps, Utility Apps">
+content="Zero App, Short Videos, Reels, Viral Videos, Trending Videos, Watch Videos, Share Videos, Video Community, Shorts Platform">
 
 <meta
 name="robots"
@@ -41,26 +41,49 @@ content="dark">
 rel="canonical"
 href="https://zeroapp.vidhwaan.com/">
 
-<!-- Open Graph -->
+<!-- ==========================================
+OPEN GRAPH
+========================================== -->
 
-<meta property="og:type" content="website">
+<meta
+property="og:type"
+content="website">
 
-<meta property="og:title"
-content="Zero App">
+<meta
+property="og:title"
+content="Zero App - Watch & Share Short Videos">
 
-<meta property="og:description"
-content="Discover apps, digital services, useful tools and innovative experiences.">
+<meta
+property="og:description"
+content="Watch trending short videos and share your own content with the Zero App community.">
 
-<meta property="og:url"
+<meta
+property="og:url"
 content="https://zeroapp.vidhwaan.com/">
 
-<meta property="og:image"
-content="/icons/icon-512.png">
-
-<meta property="og:site_name"
+<meta
+property="og:site_name"
 content="Zero App">
 
-<!-- Twitter -->
+<meta
+property="og:image"
+content="https://zeroapp.vidhwaan.com/icons/icon-512.png">
+
+<meta
+property="og:image:width"
+content="512">
+
+<meta
+property="og:image:height"
+content="512">
+
+<meta
+property="og:image:type"
+content="image/png">
+
+<!-- ==========================================
+TWITTER / X
+========================================== -->
 
 <meta
 name="twitter:card"
@@ -68,17 +91,19 @@ content="summary_large_image">
 
 <meta
 name="twitter:title"
-content="Zero App">
+content="Zero App - Watch & Share Short Videos">
 
 <meta
 name="twitter:description"
-content="Discover apps, services and digital tools.">
+content="Discover trending reels and share your own short videos.">
 
 <meta
 name="twitter:image"
-content="/icons/icon-512.png">
+content="https://zeroapp.vidhwaan.com/icons/icon-512.png">
 
-<!-- PWA -->
+<!-- ==========================================
+PWA
+========================================== -->
 
 <meta
 name="mobile-web-app-capable"
@@ -100,17 +125,23 @@ content="Zero App">
 rel="manifest"
 href="./manifest.json">
 
-<!-- Icons -->
+<!-- ==========================================
+ICONS
+========================================== -->
 
 <link
 rel="icon"
-href="./favicon.ico">
+type="image/png"
+sizes="512x512"
+href="./icons/icon-512.png">
 
 <link
 rel="apple-touch-icon"
 href="./icons/icon-192.png">
 
-<!-- Fonts -->
+<!-- ==========================================
+FONTS
+========================================== -->
 
 <link
 rel="preconnect"
@@ -125,25 +156,34 @@ crossorigin>
 href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
 rel="stylesheet">
 
-<!-- Structured Data -->
+<!-- ==========================================
+STRUCTURED DATA
+========================================== -->
 
 <script type="application/ld+json">
 {
-  "@context":"https://schema.org",
-  "@type":"WebSite",
-  "name":"Zero App",
-  "url":"https://zeroapp.pages.dev",
-  "description":"Discover apps, digital services, useful tools and innovative experiences."
+ "@context":"https://schema.org",
+ "@type":"WebSite",
+ "name":"Zero App",
+ "url":"https://zeroapp.vidhwaan.com",
+ "description":"Watch and share short videos in a full-screen vertical feed experience.",
+ "publisher":{
+   "@type":"Organization",
+   "name":"Zero App",
+   "logo":{
+     "@type":"ImageObject",
+     "url":"https://zeroapp.vidhwaan.com/icons/icon-512.png"
+   }
+ }
 }
 </script>
-
-<!-- CSS -->
 
 <link
 rel="stylesheet"
 href="./css/style.css">
 
 </head>
+
 
 <body>
 
@@ -218,7 +258,7 @@ class="modal hidden">
 <div class="modal-header">
 
 <h2>
-Add App
+Add Video
 </h2>
 
 <button
@@ -248,7 +288,7 @@ placeholder="Short Video Link">
 id="submitVideo"
 class="submit-btn">
 
-Add App
+Add Video
 
 </button>
 
