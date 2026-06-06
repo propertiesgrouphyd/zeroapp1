@@ -4,15 +4,9 @@
 // ======================================================
 
 import { initializeApp }
-
 from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
 
-import {
-
-getFirestore
-
-}
-
+import { getFirestore }
 from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
 // ======================================================
@@ -21,23 +15,23 @@ from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
 const firebaseConfig = {
 
-apiKey:
-"AIzaSyAt4d11ASECig6a2ByaLg_716AuLh6HPdc",
+  apiKey:
+  "AIzaSyAt4d11ASECig6a2ByaLg_716AuLh6HPdc",
 
-authDomain:
-"quantumfeed-e9b1d.firebaseapp.com",
+  authDomain:
+  "quantumfeed-e9b1d.firebaseapp.com",
 
-projectId:
-"quantumfeed-e9b1d",
+  projectId:
+  "quantumfeed-e9b1d",
 
-storageBucket:
-"quantumfeed-e9b1d.firebasestorage.app",
+  storageBucket:
+  "quantumfeed-e9b1d.firebasestorage.app",
 
-messagingSenderId:
-"304072670051",
+  messagingSenderId:
+  "304072670051",
 
-appId:
-"1:304072670051:web:f233d7622165781f54b156"
+  appId:
+  "1:304072670051:web:f233d7622165781f54b156"
 
 };
 
@@ -47,12 +41,12 @@ appId:
 
 const app =
 initializeApp(
-firebaseConfig
+  firebaseConfig
 );
 
 const db =
 getFirestore(
-app
+  app
 );
 
 // ======================================================
@@ -60,5 +54,5 @@ app
 // ======================================================
 
 export {
-db
+  db
 };
