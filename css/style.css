@@ -101,6 +101,8 @@ scroll-snap-type:y mandatory;
 
 overscroll-behavior:none;
 
+-webkit-overflow-scrolling:touch;
+
 background:#000;
 
 }
@@ -125,6 +127,8 @@ overflow:hidden;
 
 background:#000;
 
+contain:layout paint size;
+
 }
 
 /* ==================================================
@@ -147,7 +151,7 @@ transform:translate(-50%,-50%);
 
 border:none;
 
-pointer-events:none;
+pointer-events:auto;
 
 background:#000;
 
