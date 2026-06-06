@@ -1,0 +1,114 @@
+name: QuantumFeed Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PROJECT_NAME: quantumfeed
+
+jobs:
+
+  deploy:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Tools
+        run: |
+          npm install -g javascript-obfuscator
+          npm install -g html-minifier-terser
+          npm install -g clean-css-cli
+          npm install -g wrangler
+
+      - name: Create Dist
+        run: |
+          rm -rf dist
+          mkdir -p dist
+
+          cp -r icons dist/
+          cp favicon.ico dist/
+          cp manifest.json dist/
+          cp sw.js dist/
+
+          mkdir -p dist/css
+          mkdir -p dist/js
+
+      - name: Minify HTML
+        run: |
+          html-minifier-terser \
+          index.html \
+          --collapse-whitespace \
+          --remove-comments \
+          --remove-redundant-attributes \
+          --remove-script-type-attributes \
+          --remove-tag-whitespace \
+          --use-short-doctype \
+          --minify-css true \
+          --minify-js true \
+          -o dist/index.html
+
+      - name: Minify CSS
+        run: |
+          cleancss \
+          -o dist/css/style.css \
+          css/style.css
+
+      - name: Obfuscate Firebase Config
+        run: |
+          javascript-obfuscator \
+          js/firebase-config.js \
+          --output dist/js/firebase-config.js \
+          --compact true \
+          --control-flow-flattening true \
+          --string-array true \
+          --string-array-encoding base64
+
+      - name: Obfuscate Feed
+        run: |
+          javascript-obfuscator \
+          js/feed.js \
+          --output dist/js/feed.js \
+          --compact true \
+          --control-flow-flattening true \
+          --string-array true \
+          --string-array-encoding base64
+
+      - name: Create Cloudflare Pages Project
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          if ! wrangler pages project list | grep -q "$PROJECT_NAME"
+          then
+            wrangler pages project create "$PROJECT_NAME" \
+            --production-branch=main
+          fi
+
+      - name: Deploy To Cloudflare Pages
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          wrangler pages deploy \
+          dist \
+          --project-name="$PROJECT_NAME"
+
+      - name: Success
+        run: |
+          echo "QuantumFeed deployed successfully"
