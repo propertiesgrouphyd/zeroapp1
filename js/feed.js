@@ -2,10 +2,10 @@ import {
   db,
   collection,
   addDoc,
-  getDocs,
   query,
   orderBy,
-  limit
+  limit,
+  onSnapshot
 }
 from "./firebase-config.js";
 
@@ -233,9 +233,7 @@ return reel;
 // LOAD VIDEOS
 // ======================================================
 
-async function loadVideos(){
-
-try{
+function loadVideos(){
 
 const q = query(
 
@@ -253,8 +251,11 @@ limit(100)
 
 );
 
-const snap =
-await getDocs(q);
+onSnapshot(
+
+q,
+
+snap=>{
 
 feed.innerHTML = "";
 
@@ -268,6 +269,7 @@ loader.style.display =
 "none";
 
 return;
+
 }
 
 emptyState.classList.add(
@@ -284,7 +286,6 @@ feed.appendChild(
 createReel(
 
 data.videoId,
-
 data.username
 
 )
@@ -296,7 +297,9 @@ data.username
 loader.style.display =
 "none";
 
-}catch(err){
+},
+
+err=>{
 
 console.error(err);
 
@@ -305,6 +308,8 @@ showToast(
 );
 
 }
+
+);
 
 }
 
@@ -476,7 +481,6 @@ showToast(
 "Short Added"
 );
 
-await loadVideos();
 
 }catch(err){
 
