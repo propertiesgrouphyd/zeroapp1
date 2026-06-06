@@ -183,7 +183,7 @@ return match[1];
 // CREATE REEL
 // ======================================================
 
-function createReel(videoId,username){
+function createReel(videoId, username){
 
 const reel =
 document.createElement(
@@ -192,10 +192,6 @@ document.createElement(
 
 reel.className =
 "reel";
-
-reel.innerHTML = `
-
-<iframe
 
 reel.innerHTML = `
 <iframe
@@ -210,28 +206,6 @@ referrerpolicy="strict-origin-when-cross-origin">
     @${username}
   </div>
 </div>
-`;
-
-allow="
-autoplay;
-encrypted-media;
-fullscreen
-"
-
-allowfullscreen>
-
-</iframe>
-
-<div class="reel-overlay">
-
-<div class="username">
-
-@${username}
-
-</div>
-
-</div>
-
 `;
 
 return reel;
