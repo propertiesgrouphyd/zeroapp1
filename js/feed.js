@@ -179,6 +179,7 @@ return match[1];
 
 }
 
+
 // ======================================================
 // CREATE REEL
 // ======================================================
@@ -193,21 +194,27 @@ reel.className =
 
 reel.innerHTML = `
 <iframe
-src="https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&playsinline=1&controls=0&rel=0&modestbranding=1&enablejsapi=1"
+src="https://www.youtube.com/embed/${videoId}?playsinline=1&controls=1&rel=0&modestbranding=1"
+title="YouTube Short"
 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
 allowfullscreen>
 </iframe>
 
 <div class="reel-overlay">
-  <div class="username">
-    @${username}
-  </div>
+
+<div class="username">
+
+@${username}
+
+</div>
+
 </div>
 `;
 
 return reel;
 
 }
+
 
 // ======================================================
 // LOAD VIDEOS
