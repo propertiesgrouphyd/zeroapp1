@@ -200,8 +200,7 @@ reel.innerHTML = `
 <div class="video-placeholder">
 
 <img
-src="https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg"
-onerror="this.src='https://i.ytimg.com/vi/${videoId}/hqdefault.jpg'"
+src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg"
 loading="lazy">
 
 <button class="play-btn">
@@ -369,7 +368,7 @@ reel.prepend(
 iframe
 );
 
-iframe.style.pointerEvents = "none";
+
 
 
 
