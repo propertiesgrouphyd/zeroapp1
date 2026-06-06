@@ -95,6 +95,8 @@ width:100vw;
 
 overflow-y:auto;
 
+will-change:scroll-position;
+
 overflow-x:hidden;
 
 scroll-snap-type:y mandatory;
