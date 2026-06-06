@@ -7,97 +7,143 @@ on:
 
   workflow_dispatch:
 
-permissions:
-  contents: read
-
-env:
-  PROJECT_NAME: quantumfeed
-
 jobs:
 
   deploy:
 
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+
+    env:
+      PROJECT_NAME: quantumfeed
+
     steps:
 
-      - name: Checkout
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
-      - name: Install Tools
+      - name: Install Build Tools
         run: |
-          npm install -g javascript-obfuscator
-          npm install -g html-minifier-terser
+          npm install -g terser
           npm install -g clean-css-cli
+          npm install -g html-minifier-terser
           npm install -g wrangler
 
-      - name: Create Dist
+      - name: Prepare Dist Folder
         run: |
           rm -rf dist
+
           mkdir -p dist
-
-          cp -r icons dist/
-          cp favicon.ico dist/
-          cp manifest.json dist/
-          cp sw.js dist/
-
           mkdir -p dist/css
           mkdir -p dist/js
 
+          cp index.html dist/
+          cp manifest.json dist/
+          cp sw.js dist/
+          cp favicon.ico dist/
+
+          cp -r icons dist/
+
+          cp css/style.css dist/css/
+          cp js/firebase-config.js dist/js/
+          cp js/feed.js dist/js/
+
       - name: Minify HTML
         run: |
-          html-minifier-terser \
-          index.html \
-          --collapse-whitespace \
-          --remove-comments \
-          --remove-redundant-attributes \
-          --remove-script-type-attributes \
-          --remove-tag-whitespace \
-          --use-short-doctype \
-          --minify-css true \
-          --minify-js true \
-          -o dist/index.html
+          find dist -type f -name "*.html" | while read file
+          do
+            html-minifier-terser \
+              --collapse-whitespace \
+              --remove-comments \
+              --remove-redundant-attributes \
+              --remove-script-type-attributes \
+              --remove-tag-whitespace \
+              --use-short-doctype \
+              --minify-css true \
+              --minify-js true \
+              "$file" \
+              -o "$file"
+          done
 
       - name: Minify CSS
         run: |
-          cleancss \
-          -o dist/css/style.css \
-          css/style.css
+          find dist -type f -name "*.css" | while read file
+          do
+            cleancss \
+              -O2 \
+              "$file" \
+              -o "$file"
+          done
 
-      - name: Obfuscate Firebase Config
+      - name: Minify JavaScript
         run: |
-          javascript-obfuscator \
-          js/firebase-config.js \
-          --output dist/js/firebase-config.js \
-          --compact true \
-          --control-flow-flattening true \
-          --string-array true \
-          --string-array-encoding base64
+          find dist -type f -name "*.js" | while read file
+          do
+            terser "$file" \
+              --compress \
+              --mangle \
+              -o "$file"
+          done
 
-      - name: Obfuscate Feed
+      - name: Generate Build Version
         run: |
-          javascript-obfuscator \
-          js/feed.js \
-          --output dist/js/feed.js \
-          --compact true \
-          --control-flow-flattening true \
-          --string-array true \
-          --string-array-encoding base64
+          echo "BUILD_VERSION=$(date +%s)" >> $GITHUB_ENV
 
-      - name: Create Cloudflare Pages Project
+      - name: Inject Cache Busting
+        run: |
+          find dist -type f -name "*.html" | while read file
+          do
+            sed -i "s|css/style.css|css/style.css?v=${BUILD_VERSION}|g" "$file"
+            sed -i "s|js/firebase-config.js|js/firebase-config.js?v=${BUILD_VERSION}|g" "$file"
+            sed -i "s|js/feed.js|js/feed.js?v=${BUILD_VERSION}|g" "$file"
+            sed -i "s|manifest.json|manifest.json?v=${BUILD_VERSION}|g" "$file"
+          done
+
+      - name: Create Security Headers
+        run: |
+          cat > dist/_headers <<EOF
+          /*
+            X-Frame-Options: SAMEORIGIN
+            X-Content-Type-Options: nosniff
+            Referrer-Policy: strict-origin-when-cross-origin
+            Permissions-Policy: geolocation=(self)
+            Cross-Origin-Opener-Policy: same-origin
+            Cross-Origin-Embedder-Policy: credentialless
+            Content-Security-Policy: default-src 'self' https: data: blob: 'unsafe-inline' 'unsafe-eval';
+          EOF
+
+      - name: Wrangler Version
+        run: |
+          wrangler --version
+
+      - name: Cloudflare Auth Check
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          wrangler whoami
+
+      - name: Create Cloudflare Project If Missing
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
           if ! wrangler pages project list | grep -q "$PROJECT_NAME"
           then
+            echo "Creating Cloudflare Pages Project..."
+
             wrangler pages project create "$PROJECT_NAME" \
-            --production-branch=main
+              --production-branch main
+
+          else
+            echo "Project already exists."
           fi
 
       - name: Deploy To Cloudflare Pages
@@ -105,10 +151,10 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
-          wrangler pages deploy \
-          dist \
-          --project-name="$PROJECT_NAME"
+          wrangler pages deploy dist \
+            --project-name="$PROJECT_NAME" \
+            --commit-dirty=true
 
-      - name: Success
+      - name: Deployment Success
         run: |
-          echo "QuantumFeed deployed successfully"
+          echo "QUANTUMFEED DEPLOYED SUCCESSFULLY"
