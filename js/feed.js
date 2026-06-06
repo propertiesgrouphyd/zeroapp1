@@ -186,19 +186,16 @@ return match[1];
 function createReel(videoId, username){
 
 const reel =
-document.createElement(
-"section"
-);
+document.createElement("section");
 
 reel.className =
 "reel";
 
 reel.innerHTML = `
 <iframe
-src="https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&playsinline=1&controls=0&rel=0&modestbranding=1&playlist=${videoId}&loop=1"
+src="https://www.youtube.com/embed/${videoId}?playsinline=1&controls=1&rel=0"
 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-allowfullscreen
-referrerpolicy="strict-origin-when-cross-origin">
+allowfullscreen>
 </iframe>
 
 <div class="reel-overlay">
