@@ -369,6 +369,10 @@ reel.prepend(
 iframe
 );
 
+iframe.style.pointerEvents = "none";
+
+
+
 currentIframe =
 iframe;
 
@@ -380,34 +384,25 @@ feed.addEventListener(
 "scroll",
 ()=>{
 
-clearTimeout(
-window.scrollTimer
-);
-
-window.scrollTimer =
-setTimeout(()=>{
-
 if(currentIframe){
 
 currentIframe.remove();
 
-currentIframe =
-null;
+currentIframe = null;
 
 document
 .querySelectorAll(".video-placeholder")
 .forEach(v=>{
 
-v.style.display =
-"block";
+v.style.display = "block";
 
 });
 
 }
 
-},50);
-
-});
+},
+{ passive:true }
+);
 
 
 
