@@ -1,7 +1,7 @@
 {
-  "name": "QuantumFeed",
-  "short_name": "QuantumFeed",
-  "description": "Discover and share YouTube Shorts in an immersive vertical feed.",
+  "name": "Zero App",
+  "short_name": "Zero App",
+  "description": "Zero App - Discover Apps, Services & Digital Tools.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
