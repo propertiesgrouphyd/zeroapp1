@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<!-- ==================================================
+BASIC SEO
+================================================== -->
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width,initial-scale=1,viewport-fit=cover">
+
+<title>
+QuantumFeed - Vertical Shorts Community
+</title>
+
+<meta
+name="description"
+content="Discover and share YouTube Shorts in a beautiful vertical feed experience. QuantumFeed delivers an immersive reels-style community powered by YouTube Shorts.">
+
+<meta
+name="keywords"
+content="QuantumFeed, YouTube Shorts, Reels, Vertical Videos, Video Feed, Shorts Community, Viral Videos, PWA">
+
+<meta
+name="robots"
+content="index,follow,max-image-preview:large">
+
+<meta
+name="author"
+content="QuantumFeed">
+
+<meta
+name="theme-color"
+content="#000000">
+
+<meta
+name="color-scheme"
+content="dark">
+
+<link
+rel="canonical"
+href="https://quantumfeed.app/">
+
+<!-- ==================================================
+OPEN GRAPH
+================================================== -->
+
+<meta property="og:type" content="website">
+
+<meta property="og:title"
+content="QuantumFeed - Vertical Shorts Community">
+
+<meta property="og:description"
+content="A premium reels-style community powered by YouTube Shorts.">
+
+<meta property="og:url"
+content="https://quantumfeed.app/">
+
+<meta property="og:image"
+content="/icons/icon-512.png">
+
+<meta property="og:site_name"
+content="QuantumFeed">
+
+<!-- ==================================================
+TWITTER
+================================================== -->
+
+<meta
+name="twitter:card"
+content="summary_large_image">
+
+<meta
+name="twitter:title"
+content="QuantumFeed">
+
+<meta
+name="twitter:description"
+content="Discover and share vertical YouTube Shorts.">
+
+<meta
+name="twitter:image"
+content="/icons/icon-512.png">
+
+<!-- ==================================================
+PWA
+================================================== -->
+
+<meta
+name="mobile-web-app-capable"
+content="yes">
+
+<meta
+name="apple-mobile-web-app-capable"
+content="yes">
+
+<meta
+name="apple-mobile-web-app-status-bar-style"
+content="black-translucent">
+
+<meta
+name="apple-mobile-web-app-title"
+content="QuantumFeed">
+
+<link rel="manifest" href="./manifest.json">
+
+<!-- ==================================================
+ICONS
+================================================== -->
+
+<link rel="icon" href="./favicon.ico">
+
+<link
+rel="apple-touch-icon"
+href="./icons/icon-192.png">
+
+<!-- ==================================================
+FONTS
+================================================== -->
+
+<link rel="preconnect"
+href="https://fonts.googleapis.com">
+
+<link rel="preconnect"
+href="https://fonts.gstatic.com"
+crossorigin>
+
+<link
+href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+rel="stylesheet">
+
+<!-- ==================================================
+JSON-LD
+================================================== -->
+
+<script type="application/ld+json">
+{
+ "@context":"https://schema.org",
+ "@type":"WebSite",
+ "name":"QuantumFeed",
+ "url":"https://quantumfeed.app",
+ "description":"Vertical video community powered by YouTube Shorts."
+}
+</script>
+
+<!-- ==================================================
+CSS
+================================================== -->
+
+<link
+rel="stylesheet"
+href="./css/style.css">
+
+</head>
+
+<body>
+
+<!-- ==================================================
+APP
+================================================== -->
+
+<div id="app">
+
+  <!-- ==========================================
+  FEED CONTAINER
+  ========================================== -->
+
+  <main
+  id="feed"
+  class="feed">
+
+    <!-- videos injected by JS -->
+
+  </main>
+
+</div>
+
+<!-- ==================================================
+LOADER
+================================================== -->
+
+<div
+id="loader"
+class="loader">
+
+<div class="loader-logo">
+
+<img
+src="./icons/logo.png"
+alt="QuantumFeed">
+
+</div>
+
+<div class="loader-text">
+
+Loading Feed...
+
+</div>
+
+</div>
+
+<!-- ==================================================
+ADD VIDEO BUTTON
+================================================== -->
+
+<button
+id="addBtn"
+class="fab"
+aria-label="Add Video">
+
++
+
+</button>
+
+<!-- ==================================================
+INSTALL APP BUTTON
+================================================== -->
+
+<button
+id="installBtn"
+class="install-btn"
+aria-label="Install App">
+
+⬇ App
+
+</button>
+
+<!-- ==================================================
+UPLOAD MODAL
+================================================== -->
+
+<div
+id="uploadModal"
+class="modal hidden">
+
+<div class="modal-backdrop"></div>
+
+<div class="modal-card">
+
+<div class="modal-header">
+
+<h2>
+Submit Short
+</h2>
+
+<button
+id="closeModal"
+class="close-btn">
+
+✕
+
+</button>
+
+</div>
+
+<div class="modal-body">
+
+<input
+id="username"
+type="text"
+maxlength="30"
+placeholder="Your Name">
+
+<input
+id="shortUrl"
+type="url"
+placeholder="Paste YouTube Shorts URL">
+
+<button
+id="submitVideo"
+class="submit-btn">
+
+Submit Short
+
+</button>
+
+<div
+id="uploadStatus"
+class="upload-status">
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ==================================================
+EMPTY STATE
+================================================== -->
+
+<div
+id="emptyState"
+class="empty-state hidden">
+
+<img
+src="./icons/logo.png"
+alt="QuantumFeed">
+
+<h2>
+No Videos Yet
+</h2>
+
+<p>
+Be the first to share a YouTube Short.
+</p>
+
+</div>
+
+<!-- ==================================================
+TOAST
+================================================== -->
+
+<div
+id="toast"
+class="toast hidden">
+</div>
+
+<!-- ==================================================
+SCRIPTS
+================================================== -->
+
+<script
+type="module"
+src="./js/firebase-config.js">
+</script>
+
+<script
+type="module"
+src="./js/feed.js">
+</script>
+
+</body>
+</html>
