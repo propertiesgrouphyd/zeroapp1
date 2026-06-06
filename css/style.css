@@ -147,26 +147,14 @@ transform:translate(-50%,-50%);
 
 border:none;
 
-pointer-events:auto;
+pointer-events:none;
 
 background:#000;
 
 }
 
 
-.reel{
 
-position:relative;
-
-height:100vh;
-
-width:100vw;
-
-overflow:hidden;
-
-background:#000;
-
-}
 
 /* ==================================================
 VIDEO OVERLAY
