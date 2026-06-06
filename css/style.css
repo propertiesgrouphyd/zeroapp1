@@ -317,27 +317,18 @@ INSTALL BUTTON
 
 position:fixed;
 
-right:16px;
-bottom:24px;
-
-width:52px;
-height:52px;
+right:18px;
+bottom:38px;
 
 padding:0;
 
 border:none;
 
-border-radius:50%;
+background:none;
 
-background:rgba(15,15,15,.75);
+color:#ffffff;
 
-backdrop-filter:blur(18px);
-
--webkit-backdrop-filter:blur(18px);
-
-color:#fff;
-
-font-size:20px;
+font-size:26px;
 
 cursor:pointer;
 
@@ -345,13 +336,21 @@ z-index:9999;
 
 display:none;
 
-border:1px solid rgba(255,255,255,.10);
+opacity:.85;
 
-box-shadow:
-0 8px 24px rgba(0,0,0,.35);
+transition:.2s ease;
 
 }
 
+.install-btn:hover{
+opacity:1;
+}
+
+.install-btn:active{
+
+transform:scale(.92);
+
+}
 
 /* ==================================================
 MODAL
