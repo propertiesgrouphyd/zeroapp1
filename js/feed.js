@@ -410,6 +410,59 @@ v.style.display =
 });
 
 
+
+// ======================================================
+// DAILY LIMIT (5 VIDEOS)
+// ======================================================
+
+function canUploadToday(){
+
+const today =
+new Date().toISOString().split("T")[0];
+
+const savedDate =
+localStorage.getItem("uploadDate");
+
+let count =
+parseInt(
+localStorage.getItem("uploadCount") || "0"
+);
+
+if(savedDate !== today){
+
+localStorage.setItem(
+"uploadDate",
+today
+);
+
+localStorage.setItem(
+"uploadCount",
+"0"
+);
+
+count = 0;
+
+}
+
+return count < 5;
+
+}
+
+function increaseUploadCount(){
+
+const count =
+parseInt(
+localStorage.getItem("uploadCount") || "0"
+);
+
+localStorage.setItem(
+"uploadCount",
+String(count + 1)
+);
+
+}
+
+
 // ======================================================
 // SUBMIT
 // ======================================================
@@ -422,6 +475,15 @@ usernameInput.value.trim();
 
 const url =
 shortUrlInput.value.trim();
+
+if(!canUploadToday()){
+
+uploadStatus.innerText =
+"Daily limit reached (5 videos/day)";
+
+return;
+
+}
 
 if(!username){
 
@@ -466,6 +528,8 @@ Date.now()
 }
 
 );
+
+increaseUploadCount();
 
 usernameInput.value = "";
 shortUrlInput.value = "";
