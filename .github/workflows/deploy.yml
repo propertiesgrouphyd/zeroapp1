@@ -106,29 +106,13 @@ jobs:
             sed -i "s|manifest.json|manifest.json?v=${BUILD_VERSION}|g" "$file"
           done
 
-      - name: Create Security Headers
-        run: |
-          cat > dist/_headers <<EOF
-          /*
-            X-Frame-Options: SAMEORIGIN
-            X-Content-Type-Options: nosniff
-            Referrer-Policy: strict-origin-when-cross-origin
-            Permissions-Policy: geolocation=(self)
-            Cross-Origin-Opener-Policy: same-origin
-            Cross-Origin-Embedder-Policy: credentialless
-            Content-Security-Policy: default-src 'self' https: data: blob: 'unsafe-inline' 'unsafe-eval';
-          EOF
+
 
       - name: Wrangler Version
         run: |
           wrangler --version
 
-      - name: Cloudflare Auth Check
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: |
-          wrangler whoami
+
 
       - name: Create Cloudflare Project If Missing
         env:
