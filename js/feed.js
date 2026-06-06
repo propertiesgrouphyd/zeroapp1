@@ -192,13 +192,25 @@ document.createElement("section");
 reel.className =
 "reel";
 
+reel.dataset.videoId =
+videoId;
+
 reel.innerHTML = `
-<iframe
-src="https://www.youtube.com/embed/${videoId}?playsinline=1&controls=1&rel=0&modestbranding=1"
-title="YouTube Short"
-allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-allowfullscreen>
-</iframe>
+
+<div class="video-placeholder">
+
+<img
+src="https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg"
+onerror="this.src='https://i.ytimg.com/vi/${videoId}/hqdefault.jpg'"
+loading="lazy">
+
+<button class="play-btn">
+
+▶
+
+</button>
+
+</div>
 
 <div class="reel-overlay">
 
@@ -209,6 +221,7 @@ allowfullscreen>
 </div>
 
 </div>
+
 `;
 
 return reel;
@@ -294,6 +307,103 @@ showToast(
 }
 
 }
+
+
+let currentIframe = null;
+
+feed.addEventListener(
+"click",
+e=>{
+
+const btn =
+e.target.closest(".play-btn");
+
+if(!btn) return;
+
+const reel =
+btn.closest(".reel");
+
+const videoId =
+reel.dataset.videoId;
+
+if(currentIframe){
+
+currentIframe.remove();
+
+currentIframe = null;
+
+document
+.querySelectorAll(".video-placeholder")
+.forEach(v=>v.style.display="block");
+
+}
+
+const placeholder =
+reel.querySelector(
+".video-placeholder"
+);
+
+placeholder.style.display =
+"none";
+
+const iframe =
+document.createElement(
+"iframe"
+);
+
+iframe.src =
+`https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&playsinline=1&rel=0&modestbranding=1`;
+
+iframe.allow =
+"autoplay; encrypted-media";
+
+iframe.allowFullscreen =
+true;
+
+reel.prepend(
+iframe
+);
+
+currentIframe =
+iframe;
+
+}
+);
+
+
+feed.addEventListener(
+"scroll",
+()=>{
+
+clearTimeout(
+window.scrollTimer
+);
+
+window.scrollTimer =
+setTimeout(()=>{
+
+if(currentIframe){
+
+currentIframe.remove();
+
+currentIframe =
+null;
+
+document
+.querySelectorAll(".video-placeholder")
+.forEach(v=>{
+
+v.style.display =
+"block";
+
+});
+
+}
+
+},50);
+
+});
+
 
 // ======================================================
 // SUBMIT
