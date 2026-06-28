@@ -1,32 +1,35 @@
 // ======================================================
-// QUANTUMFEED
+// ZERO APP
 // SERVICE WORKER
 // ======================================================
 
-const CACHE_NAME =
-"quantumfeed-v1";
+const CACHE_NAME = "zeroapp-v2";
 
-const ASSETS = [
+// ======================================================
+// STATIC ASSETS
+// ======================================================
 
-"/",
+const STATIC_ASSETS = [
 
-"/index.html",
+  "/",
 
-"/manifest.json",
+  "/index.html",
 
-"/favicon.ico",
+  "/manifest.json",
 
-"/css/style.css",
+  "/favicon.ico",
 
-"/js/firebase-config.js",
+  "/css/style.css",
 
-"/js/feed.js",
+  "/js/firebase-config.js",
 
-"/icons/logo.png",
+  "/js/feed.js",
 
-"/icons/icon-192.png",
+  "/icons/logo.png",
 
-"/icons/icon-512.png"
+  "/icons/icon-192.png",
+
+  "/icons/icon-512.png"
 
 ];
 
@@ -34,138 +37,170 @@ const ASSETS = [
 // INSTALL
 // ======================================================
 
-self.addEventListener(
-"install",
-event=>{
+self.addEventListener("install", event=>{
 
-event.waitUntil(
+  event.waitUntil(
 
-caches.open(
-CACHE_NAME
-)
+    caches.open(CACHE_NAME)
 
-.then(cache=>
+    .then(cache=>cache.addAll(STATIC_ASSETS))
 
-cache.addAll(
-ASSETS
-)
+  );
 
-)
+  self.skipWaiting();
 
-);
-
-self.skipWaiting();
-
-}
-);
+});
 
 // ======================================================
 // ACTIVATE
 // ======================================================
 
-self.addEventListener(
-"activate",
-event=>{
+self.addEventListener("activate",event=>{
 
-event.waitUntil(
+  event.waitUntil(
 
-caches.keys()
+    caches.keys()
 
-.then(keys=>
+    .then(keys=>
 
-Promise.all(
+      Promise.all(
 
-keys.map(key=>{
+        keys.map(key=>{
 
-if(
-key !== CACHE_NAME
-){
+          if(key!==CACHE_NAME){
 
-return caches.delete(
-key
-);
+            return caches.delete(key);
 
-}
+          }
 
-})
+        })
 
-)
+      )
 
-)
+    )
 
-);
+  );
 
-self.clients.claim();
+  self.clients.claim();
 
-}
-);
+});
 
 // ======================================================
 // FETCH
 // ======================================================
 
-self.addEventListener(
-"fetch",
-event=>{
+self.addEventListener("fetch",event=>{
 
-if(
-event.request.method !==
-"GET"
-){
-return;
-}
+  if(event.request.method!=="GET"){
 
-event.respondWith(
+    return;
 
-caches.match(
-event.request
-)
+  }
 
-.then(cached=>{
+  const url=new URL(event.request.url);
 
-if(cached){
+  // ===========================================
+  // NEVER CACHE DATA FILES
+  // ===========================================
 
-return cached;
+  if(url.pathname.startsWith("/data/")){
 
-}
+    event.respondWith(
 
-return fetch(
-event.request
-)
+      fetch(event.request,{
 
-.then(response=>{
+        cache:"no-store"
 
-const copy =
-response.clone();
+      })
 
-caches.open(
-CACHE_NAME
-)
+    );
 
-.then(cache=>{
+    return;
 
-cache.put(
-event.request,
-copy
-);
+  }
+
+  // ===========================================
+  // HTML
+  // Network First
+  // ===========================================
+
+  if(event.request.mode==="navigate"){
+
+    event.respondWith(
+
+      fetch(event.request)
+
+      .then(response=>{
+
+        const copy=response.clone();
+
+        caches.open(CACHE_NAME)
+
+        .then(cache=>{
+
+          cache.put(event.request,copy);
+
+        });
+
+        return response;
+
+      })
+
+      .catch(()=>{
+
+        return caches.match("/index.html");
+
+      })
+
+    );
+
+    return;
+
+  }
+
+  // ===========================================
+  // STATIC FILES
+  // Cache First
+  // ===========================================
+
+  event.respondWith(
+
+    caches.match(event.request)
+
+    .then(cached=>{
+
+      if(cached){
+
+        return cached;
+
+      }
+
+      return fetch(event.request)
+
+      .then(response=>{
+
+        if(!response || response.status!==200){
+
+          return response;
+
+        }
+
+        const copy=response.clone();
+
+        caches.open(CACHE_NAME)
+
+        .then(cache=>{
+
+          cache.put(event.request,copy);
+
+        });
+
+        return response;
+
+      });
+
+    })
+
+  );
 
 });
-
-return response;
-
-})
-
-.catch(()=>{
-
-return caches.match(
-"/index.html"
-);
-
-});
-
-})
-
-);
-
-}
-);
