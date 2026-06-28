@@ -54,7 +54,7 @@ jobs:
           mkdir -p dist
           mkdir -p dist/css
           mkdir -p dist/js
-          mkdir -p dist/data
+          mkdir -p dist/videos
 
           cp index.html dist/
           cp manifest.json dist/
@@ -67,7 +67,7 @@ jobs:
           cp js/firebase-config.js dist/js/
           cp js/feed.js dist/js/
 
-          cp -r data/* dist/data/
+          cp -r data/* videos/data/
           cp _headers dist/
 
 
@@ -78,15 +78,15 @@ jobs:
 
           echo ""
           echo "===== DATA ====="
-          ls -la dist/data
+          ls -la dist/videos
 
           echo ""
           echo "===== latest.json ====="
-          cat dist/data/latest.json
+          cat dist/videos/latest.json
 
           echo ""
           echo "===== videos ====="
-          cat dist/data/videos-*.json   
+          cat dist/videos/videos-*.json   
 
       - name: Minify HTML
         run: |
