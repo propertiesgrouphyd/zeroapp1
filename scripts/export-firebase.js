@@ -53,7 +53,7 @@ const fileName =
 const dataDir =
 path.join(
 process.cwd(),
-"data"
+"videos"
 );
 
 fs.mkdirSync(
