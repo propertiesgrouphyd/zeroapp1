@@ -1,11 +1,7 @@
 import {
   db,
   collection,
-  addDoc,
-  query,
-  orderBy,
-  limit,
-  onSnapshot
+  addDoc
 }
 from "./firebase-config.js";
 
@@ -233,60 +229,66 @@ return reel;
 // LOAD VIDEOS
 // ======================================================
 
-function loadVideos(){
+async function loadVideos(){
 
-const q = query(
+loader.style.display = "flex";
 
-collection(
-db,
-"videos"
-),
+try{
 
-orderBy(
-"createdAt",
-"desc"
-),
-
-limit(100)
-
+const latestResponse =
+await fetch(
+"./data/latest.json",
+{
+cache:"no-store"
+}
 );
 
-onSnapshot(
+const latest =
+await latestResponse.json();
 
-q,
+if(!latest.file){
 
-snap=>{
+emptyState.classList.remove("hidden");
 
-feed.innerHTML = "";
-
-if(snap.empty){
-
-emptyState.classList.remove(
-"hidden"
-);
-
-loader.style.display =
-"none";
+loader.style.display="none";
 
 return;
 
 }
 
-emptyState.classList.add(
-"hidden"
+const videosResponse =
+await fetch(
+"./data/" + latest.file,
+{
+cache:"no-store"
+}
 );
 
-snap.forEach(doc=>{
+const videos =
+await videosResponse.json();
 
-const data =
-doc.data();
+feed.innerHTML="";
+
+if(!videos.length){
+
+emptyState.classList.remove("hidden");
+
+loader.style.display="none";
+
+return;
+
+}
+
+emptyState.classList.add("hidden");
+
+videos.forEach(video=>{
 
 feed.appendChild(
 
 createReel(
 
-data.videoId,
-data.username
+video[1],
+video[0]
 
 )
 
@@ -294,22 +296,17 @@ data.username
 
 });
 
-loader.style.display =
-"none";
+loader.style.display="none";
 
-},
-
-err=>{
+}catch(err){
 
 console.error(err);
 
-showToast(
-"Failed to load videos"
-);
+loader.style.display="none";
+
+showToast("Failed to load videos");
 
 }
-
-);
 
 }
 
