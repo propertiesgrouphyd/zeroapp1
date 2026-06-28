@@ -1,0 +1,7 @@
+{
+  "name": "zeroapp-export",
+  "private": true,
+  "dependencies": {
+    "firebase-admin": "^13.4.0"
+  }
+}
