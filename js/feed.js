@@ -243,6 +243,12 @@ cache:"no-store"
 }
 );
 
+if(!latestResponse.ok){
+
+throw new Error("latest.json not found");
+
+}
+
 const latest =
 await latestResponse.json();
 
@@ -264,6 +270,12 @@ cache:"no-store"
 }
 );
 
+if(!videosResponse.ok){
+
+throw new Error("Videos file not found");
+
+}
+
 const videos =
 await videosResponse.json();
 
@@ -280,6 +292,12 @@ return;
 }
 
 emptyState.classList.add("hidden");
+
+if(!Array.isArray(videos)){
+
+throw new Error("Invalid videos.json");
+
+}
 
 videos.forEach(video=>{
 
