@@ -37,67 +37,69 @@ d.videoId || ""
 
 const now = new Date();
 
-const year = now.getFullYear();
+const year =
+now.getFullYear();
 
-const month = String(
+const month =
+String(
 now.getMonth()+1
 ).padStart(2,"0");
 
-const day = String(
+const day =
+String(
 now.getDate()
 ).padStart(2,"0");
 
 const fileName =
 `videos-${year}${month}${day}.json`;
 
-const dataDir =
+const videosDir =
 path.join(
 process.cwd(),
 "videos"
 );
 
 fs.mkdirSync(
-dataDir,
-{recursive:true}
+videosDir,
+{
+recursive:true
+}
 );
 
-// Delete previous videos-*.json files
-fs.readdirSync(dataDir)
+// Delete old video files
+
+fs.readdirSync(videosDir)
+
 .filter(file=>
+
 file.startsWith("videos-") &&
 file.endsWith(".json")
+
 )
+
 .forEach(file=>{
 
 fs.unlinkSync(
-path.join(dataDir,file)
+
+path.join(
+videosDir,
+file
+)
+
 );
 
 });
 
-// Write today's video file
+// Write today's file
+
 fs.writeFileSync(
 
 path.join(
-dataDir,
+videosDir,
 fileName
 ),
 
 JSON.stringify(videos)
-
-);
-
-// Write latest.json
-fs.writeFileSync(
-
-path.join(
-dataDir,
-"latest.json"
-),
-
-JSON.stringify({
-file:fileName
-})
 
 );
 
@@ -112,7 +114,13 @@ console.log(
 }
 
 run()
-.then(()=>process.exit(0))
+.then(()=>{
+
+console.log("Done");
+
+process.exit(0);
+
+})
 .catch(err=>{
 
 console.error(err);
