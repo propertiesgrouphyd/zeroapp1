@@ -69,6 +69,24 @@ jobs:
 
           cp -r data/* dist/data/
 
+
+      - name: Verify Dist Data
+        run: |
+          echo "===== DIST FILES ====="
+          find dist -type f | sort
+
+          echo ""
+          echo "===== DATA ====="
+          ls -la dist/data
+
+          echo ""
+          echo "===== latest.json ====="
+          cat dist/data/latest.json
+
+          echo ""
+          echo "===== videos ====="
+          cat dist/data/videos-*.json   
+
       - name: Minify HTML
         run: |
           find dist -type f -name "*.html" | while read file
