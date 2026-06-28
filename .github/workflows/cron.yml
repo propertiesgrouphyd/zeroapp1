@@ -1,15 +1,22 @@
-name: QuantumFeed Cleanup
+name: Zero App Daily Export
 
 on:
-
   schedule:
-    - cron: "0 0 * * *"
+    # 12:00 AM IST (6:30 PM UTC)
+    - cron: "30 18 * * *"
 
   workflow_dispatch:
 
+permissions:
+  contents: write
+
+concurrency:
+  group: zero-app-export
+  cancel-in-progress: false
+
 jobs:
 
-  cleanup:
+  export:
 
     runs-on: ubuntu-latest
 
@@ -17,22 +24,41 @@ jobs:
 
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: npm
 
-      - name: Create Package
-        run: |
-          echo '{}' > package.json
+      - name: Install Dependencies
+        run: npm ci
 
-      - name: Install Firebase Admin
-        run: |
-          npm install firebase-admin
-
-      - name: Run Cleanup
+      - name: Export Firebase
         env:
           FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: node scripts/export-firebase.js
+
+      - name: Commit Daily Files
         run: |
-          node delete-old.js
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add data/
+
+          if git diff --cached --quiet; then
+            echo "No changes"
+            exit 0
+          fi
+
+          git commit -m "Daily Zero App export"
+
+      - name: Push Repository
+        run: git push origin HEAD
+
+      - name: Delete Firebase
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: node scripts/delete-firebase.js
