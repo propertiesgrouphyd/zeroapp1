@@ -3,47 +3,35 @@
 // SERVICE WORKER
 // ======================================================
 
-const CACHE_NAME = "zeroapp-v5";
+const CACHE_NAME = "zeroapp-v6";
 
 // ======================================================
 // STATIC ASSETS
 // ======================================================
 
 const STATIC_ASSETS = [
-
   "/",
-
   "/index.html",
-
   "/manifest.json",
-
   "/favicon.ico",
-
   "/css/style.css",
-
   "/js/firebase-config.js",
-
   "/js/feed.js",
-
   "/icons/logo.png",
-
   "/icons/icon-192.png",
-
   "/icons/icon-512.png"
-
 ];
 
 // ======================================================
 // INSTALL
 // ======================================================
 
-self.addEventListener("install", event=>{
+self.addEventListener("install", event => {
 
   event.waitUntil(
 
     caches.open(CACHE_NAME)
-
-    .then(cache=>cache.addAll(STATIC_ASSETS))
+      .then(cache => cache.addAll(STATIC_ASSETS))
 
   );
 
@@ -55,22 +43,18 @@ self.addEventListener("install", event=>{
 // ACTIVATE
 // ======================================================
 
-self.addEventListener("activate",event=>{
+self.addEventListener("activate", event => {
 
   event.waitUntil(
 
-    caches.keys()
-
-    .then(keys=>
+    caches.keys().then(keys =>
 
       Promise.all(
 
-        keys.map(key=>{
+        keys.map(key => {
 
-          if(key!==CACHE_NAME){
-
+          if (key !== CACHE_NAME) {
             return caches.delete(key);
-
           }
 
         })
@@ -89,28 +73,30 @@ self.addEventListener("activate",event=>{
 // FETCH
 // ======================================================
 
-self.addEventListener("fetch",event=>{
+self.addEventListener("fetch", event => {
 
-  if(event.request.method!=="GET"){
-
+  // Ignore non-GET requests
+  if (event.request.method !== "GET") {
     return;
-
   }
 
-  const url=new URL(event.request.url);
+  const url = new URL(event.request.url);
 
-  // ===========================================
-  // NEVER CACHE DATA FILES
-  // ===========================================
+  // Ignore browser extensions and other unsupported schemes
+  if (
+    url.protocol !== "http:" &&
+    url.protocol !== "https:"
+  ) {
+    return;
+  }
 
-  if(url.pathname.startsWith("/data/")){
+  // Never cache JSON data
+  if (url.pathname.startsWith("/data/")) {
 
     event.respondWith(
 
-      fetch(event.request,{
-
-        cache:"no-store"
-
+      fetch(event.request, {
+        cache: "no-store"
       })
 
     );
@@ -119,38 +105,28 @@ self.addEventListener("fetch",event=>{
 
   }
 
-  // ===========================================
-  // HTML
-  // Network First
-  // ===========================================
-
-  if(event.request.mode==="navigate"){
+  // HTML - Network First
+  if (event.request.mode === "navigate") {
 
     event.respondWith(
 
       fetch(event.request)
 
-      .then(response=>{
+        .then(response => {
 
-        const copy=response.clone();
+          const copy = response.clone();
 
-        caches.open(CACHE_NAME)
+          caches.open(CACHE_NAME).then(cache => {
 
-        .then(cache=>{
+            cache.put(event.request, copy);
 
-          cache.put(event.request,copy);
+          });
 
-        });
+          return response;
 
-        return response;
+        })
 
-      })
-
-      .catch(()=>{
-
-        return caches.match("/index.html");
-
-      })
+        .catch(() => caches.match("/index.html"))
 
     );
 
@@ -158,48 +134,38 @@ self.addEventListener("fetch",event=>{
 
   }
 
-  // ===========================================
-  // STATIC FILES
-  // Cache First
-  // ===========================================
-
+  // Static Assets - Cache First
   event.respondWith(
 
     caches.match(event.request)
 
-    .then(cached=>{
+      .then(cached => {
 
-      if(cached){
-
-        return cached;
-
-      }
-
-      return fetch(event.request)
-
-      .then(response=>{
-
-        if(!response || response.status!==200){
-
-          return response;
-
+        if (cached) {
+          return cached;
         }
 
-        const copy=response.clone();
+        return fetch(event.request)
 
-        caches.open(CACHE_NAME)
+          .then(response => {
 
-        .then(cache=>{
+            if (!response || response.status !== 200) {
+              return response;
+            }
 
-          cache.put(event.request,copy);
+            const copy = response.clone();
 
-        });
+            caches.open(CACHE_NAME).then(cache => {
 
-        return response;
+              cache.put(event.request, copy);
 
-      });
+            });
 
-    })
+            return response;
+
+          });
+
+      })
 
   );
 
