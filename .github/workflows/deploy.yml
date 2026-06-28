@@ -68,6 +68,7 @@ jobs:
           cp js/feed.js dist/js/
 
           cp -r data/* dist/data/
+          cp _headers dist/
 
 
       - name: Verify Dist Data
