@@ -3,7 +3,7 @@
 // SERVICE WORKER
 // ======================================================
 
-const CACHE_NAME = "zeroapp-v2";
+const CACHE_NAME = "zeroapp-v5";
 
 // ======================================================
 // STATIC ASSETS
