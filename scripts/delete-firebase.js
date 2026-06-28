@@ -27,7 +27,8 @@ return;
 
 }
 
-const batch = db.batch();
+const batch =
+db.batch();
 
 snapshot.forEach(doc=>{
 
