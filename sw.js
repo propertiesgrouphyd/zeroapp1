@@ -3,7 +3,7 @@
 // SERVICE WORKER
 // ======================================================
 
-const CACHE_NAME = "zeroapp-v6";
+const CACHE_NAME = "zeroapp-v7";
 
 // ======================================================
 // STATIC ASSETS
@@ -91,7 +91,7 @@ self.addEventListener("fetch", event => {
   }
 
   // Never cache JSON data
-  if (url.pathname.startsWith("/data/")) {
+  if (url.pathname.startsWith("/videos/")) {
 
     event.respondWith(
 
