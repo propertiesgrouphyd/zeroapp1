@@ -43,6 +43,7 @@ jobs:
           mkdir -p dist
           mkdir -p dist/css
           mkdir -p dist/js
+          mkdir -p dist/data
 
           cp index.html dist/
           cp manifest.json dist/
@@ -54,6 +55,8 @@ jobs:
           cp css/style.css dist/css/
           cp js/firebase-config.js dist/js/
           cp js/feed.js dist/js/
+
+          cp -r data/* dist/data/
 
       - name: Minify HTML
         run: |
