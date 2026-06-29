@@ -3,7 +3,7 @@
 // SERVICE WORKER
 // ======================================================
 
-const CACHE_NAME = "zeroapp-v7";
+const CACHE_NAME = "zeroapp-v9";
 
 // ======================================================
 // STATIC ASSETS
@@ -16,7 +16,6 @@ const STATIC_ASSETS = [
   "/favicon.ico",
   "/css/style.css",
   "/js/firebase-config.js",
-  "/js/feed.js",
   "/icons/logo.png",
   "/icons/icon-192.png",
   "/icons/icon-512.png"
