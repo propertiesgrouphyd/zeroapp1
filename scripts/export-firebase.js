@@ -37,21 +37,18 @@ d.videoId || ""
 
 const now = new Date();
 
-const year =
-now.getFullYear();
+const parts = new Intl.DateTimeFormat("en-CA", {
+  timeZone: "Asia/Kolkata",
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit"
+}).formatToParts(now);
 
-const month =
-String(
-now.getMonth()+1
-).padStart(2,"0");
+const year = parts.find(p => p.type === "year").value;
+const month = parts.find(p => p.type === "month").value;
+const day = parts.find(p => p.type === "day").value;
 
-const day =
-String(
-now.getDate()
-).padStart(2,"0");
-
-const fileName =
-`videos-${year}${month}${day}.json`;
+const fileName = `videos-${year}${month}${day}.json`;
 
 const videosDir =
 path.join(
