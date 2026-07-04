@@ -2,8 +2,8 @@ name: Zero App Daily Export
 
 on:
   schedule:
-    # 12:00 AM IST = 6:30 PM UTC
-    - cron: "30 18 * * *"
+    # 11:30 PM IST = 6:00 PM UTC
+    - cron: "0 18 * * *"
 
   workflow_dispatch:
 
