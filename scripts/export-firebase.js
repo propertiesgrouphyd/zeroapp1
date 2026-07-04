@@ -3,125 +3,114 @@ const fs = require("fs");
 const path = require("path");
 
 const serviceAccount = JSON.parse(
-process.env.FIREBASE_SERVICE_ACCOUNT
+  process.env.FIREBASE_SERVICE_ACCOUNT
 );
 
 admin.initializeApp({
-credential: admin.credential.cert(serviceAccount)
+  credential: admin.credential.cert(serviceAccount)
 });
 
 const db = admin.firestore();
 
-async function run(){
+async function run() {
 
-console.log("Export Started");
+  console.log("Export Started");
 
-const snapshot =
-await db
-.collection("videos")
-.orderBy("createdAt","desc")
-.get();
+  const snapshot = await db
+    .collection("videos")
+    .orderBy("createdAt", "desc")
+    .get();
 
-const videos = [];
+  const videos = [];
 
-snapshot.forEach(doc=>{
+  snapshot.forEach(doc => {
 
-const d = doc.data();
+    const d = doc.data();
 
-videos.push([
-d.username || "",
-d.videoId || ""
-]);
+    videos.push([
+      d.username || "",
+      d.videoId || ""
+    ]);
 
-});
+  });
 
-const now = new Date();
+  // Get tomorrow's date in IST
 
-const parts = new Intl.DateTimeFormat("en-CA", {
-  timeZone: "Asia/Kolkata",
-  year: "numeric",
-  month: "2-digit",
-  day: "2-digit"
-}).formatToParts(now);
+  const now = new Date();
 
-const year = parts.find(p => p.type === "year").value;
-const month = parts.find(p => p.type === "month").value;
-const day = parts.find(p => p.type === "day").value;
+  const istNow = new Date(
+    now.toLocaleString("en-US", {
+      timeZone: "Asia/Kolkata"
+    })
+  );
 
-const fileName = `videos-${year}${month}${day}.json`;
+  istNow.setDate(istNow.getDate() + 1);
 
-const videosDir =
-path.join(
-process.cwd(),
-"videos"
-);
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Kolkata",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  }).formatToParts(istNow);
 
-fs.mkdirSync(
-videosDir,
-{
-recursive:true
-}
-);
+  const year = parts.find(p => p.type === "year").value;
+  const month = parts.find(p => p.type === "month").value;
+  const day = parts.find(p => p.type === "day").value;
 
-// Delete old video files
+  const fileName = `videos-${year}${month}${day}.json`;
 
-fs.readdirSync(videosDir)
+  const videosDir = path.join(
+    process.cwd(),
+    "videos"
+  );
 
-.filter(file=>
+  fs.mkdirSync(videosDir, {
+    recursive: true
+  });
 
-file.startsWith("videos-") &&
-file.endsWith(".json")
+  // Delete old video files
 
-)
+  fs.readdirSync(videosDir)
+    .filter(file =>
+      file.startsWith("videos-") &&
+      file.endsWith(".json")
+    )
+    .forEach(file => {
 
-.forEach(file=>{
+      fs.unlinkSync(
+        path.join(
+          videosDir,
+          file
+        )
+      );
 
-fs.unlinkSync(
+    });
 
-path.join(
-videosDir,
-file
-)
+  // Write tomorrow's file
 
-);
+  fs.writeFileSync(
+    path.join(
+      videosDir,
+      fileName
+    ),
+    JSON.stringify(videos)
+  );
 
-});
-
-// Write today's file
-
-fs.writeFileSync(
-
-path.join(
-videosDir,
-fileName
-),
-
-JSON.stringify(videos)
-
-);
-
-console.log(
-`Exported ${videos.length} videos`
-);
-
-console.log(
-`Created ${fileName}`
-);
+  console.log(`Exported ${videos.length} videos`);
+  console.log(`Created ${fileName}`);
 
 }
 
 run()
-.then(()=>{
+  .then(() => {
 
-console.log("Done");
+    console.log("Done");
+    process.exit(0);
 
-process.exit(0);
+  })
+  .catch(err => {
 
-})
-.catch(err=>{
+    console.error(err);
+    process.exit(1);
 
-console.error(err);
-
-process.exit(1);
-
-});
+  });
