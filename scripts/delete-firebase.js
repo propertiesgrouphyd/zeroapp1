@@ -1,61 +1,72 @@
 const admin = require("firebase-admin");
 
 const serviceAccount = JSON.parse(
-process.env.FIREBASE_SERVICE_ACCOUNT
+  process.env.FIREBASE_SERVICE_ACCOUNT
 );
 
 admin.initializeApp({
-credential: admin.credential.cert(serviceAccount)
+  credential: admin.credential.cert(serviceAccount)
 });
 
 const db = admin.firestore();
 
-async function run(){
+async function run() {
 
-console.log("Deleting Firebase videos...");
+  console.log("Deleting Firebase videos...");
 
-const snapshot =
-await db
-.collection("videos")
-.get();
+  const snapshot = await db
+    .collection("videos")
+    .get();
 
-if(snapshot.empty){
+  if (snapshot.empty) {
 
-console.log("No videos found.");
+    console.log("No videos found.");
+    return;
 
-return;
+  }
 
-}
+  let batch = db.batch();
+  let batchCount = 0;
+  let deleted = 0;
 
-const batch =
-db.batch();
+  for (const doc of snapshot.docs) {
 
-snapshot.forEach(doc=>{
+    batch.delete(doc.ref);
+    batchCount++;
 
-batch.delete(doc.ref);
+    if (batchCount === 500) {
 
-});
+      await batch.commit();
 
-await batch.commit();
+      deleted += batchCount;
+      batch = db.batch();
+      batchCount = 0;
 
-console.log(
-`Deleted ${snapshot.size} videos`
-);
+    }
+
+  }
+
+  if (batchCount > 0) {
+
+    await batch.commit();
+    deleted += batchCount;
+
+  }
+
+  console.log(`Deleted ${deleted} videos`);
 
 }
 
 run()
-.then(()=>{
+  .then(() => {
 
-console.log("Done");
+    console.log("Done");
+    process.exit(0);
 
-process.exit(0);
+  })
+  .catch(err => {
 
-})
-.catch(err=>{
+    console.error(err);
+    process.exit(1);
 
-console.error(err);
-
-process.exit(1);
-
-});
+  });
