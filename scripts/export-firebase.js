@@ -68,23 +68,6 @@ async function run() {
     recursive: true
   });
 
-  // Delete old video files
-
-  fs.readdirSync(videosDir)
-    .filter(file =>
-      file.startsWith("videos-") &&
-      file.endsWith(".json")
-    )
-    .forEach(file => {
-
-      fs.unlinkSync(
-        path.join(
-          videosDir,
-          file
-        )
-      );
-
-    });
 
   // Write tomorrow's file
 
